@@ -10,10 +10,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Create project.yml
+        run: |
+          cat <<EOF > project.yml
+          name: Bounce
+          options:
+            bundleIdPrefix: com.evanlin
+          targets:
+            Bounce:
+              type: application
+              platform: iOS
+              deploymentTarget: "16.0"
+              sources:
+                - Bounce
+              info:
+                path: Bounce/Info.plist
+          EOF
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
       - name: Build the app
         run: |
           xcodebuild clean build \
-            -project "Bounce/Bounce.xcodeproj" \
+            -project "Bounce.xcodeproj" \
             -scheme "Bounce" \
             -configuration Release \
             -sdk iphoneos \

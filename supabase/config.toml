@@ -1,0 +1,34 @@
+# Minimal local-dev config for the Supabase CLI. Unlisted keys use CLI defaults.
+project_id = "bounce"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+
+[storage]
+enabled = true
+# Lossless bounces and stems get big. Production projects must also raise the
+# global limit in Dashboard → Storage → Settings.
+file_size_limit = "1GiB"
+
+[auth]
+enabled = true
+site_url = "https://bounce.example.com"
+additional_redirect_urls = ["bounce://auth-callback"]
+enable_signup = true
+minimum_password_length = 8
+
+[auth.email]
+enable_signup = true
+# Flip to true for production so creators verify their email.
+enable_confirmations = false
+
+# Share functions are called by guests who have no session. They do their own
+# token validation and optional user-JWT inspection.
+[functions.share-resolve]
+verify_jwt = false
+
+[functions.share-comment]
+verify_jwt = false

@@ -10,10 +10,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
       - name: Build the app
         run: |
           xcodebuild clean build \
-            -project "Bounce/Bounce.xcodeproj" \
+            -project "Bounce.xcodeproj" \
             -scheme "Bounce" \
             -configuration Release \
             -sdk iphoneos \
